@@ -22,29 +22,28 @@ w.keypad(1)
 w.timeout(100)
 
 # put the location of the snake when the game starts;
-snk_x = sw // 4  # it means that the snake will appear in a quater value of the screen width, if th screen width = 100px, snk_x = 25px
-snk_y = sh //2   # it means that the snake will appear in the middle of the screen height
+snk_x = sw// 4  # it means that the snake will appear in a quater value of the screen width, if th screen width = 100px, snk_x = 25px
+snk_y = sh//2   # it means that the snake will appear in the middle of the screen height
 
 # this list gonna hold the coordinates of the snake body parts when the game starts
 snake = [
-    [snk_y,snk_x]
-    [snk_y,snk_x-1]
+    [snk_y,snk_x],
+    [snk_y,snk_x-1],
     [snk_y,snk_x-2]
 ]
-
 # Now, deciding the locatio, attributes and theshape of the food for the snake
 # the ".Acs_pi()", choose the presenting way of the snake, also"w.add(y,x,ch[,attr])
 # by default,the character position and attribute are the current settings for the window object
-food = [sh // 2, sw//2]
+food = [sh// 2, sw//2]
 w.addch(food[0],food[1], curses.ACS_PI) 
 
 # DECIDING THE THE FIRST DIRECTION FOR THE Snake and here it will be to the right;
-key = curses.KEY.RIGHT
+key = curses.KEY_RIGHT
 
 # Her, i will start creating an infinite loop of the snake moving, to make it keep running until the user lose 
 # Then, i used the ".getch()" to recieve the user input (the next key direction),
 # Note, it will be the same key if he didn't press any new keys
-while True :
+while True:
     next_key = w.getch()
     key = key if next_key == -1 else next_key
 
@@ -52,7 +51,7 @@ while True :
 # snake[0,0] in [0,sh] it means that the snake hit the screen from top or bottom, also
 # snake[0,1] in [0,sw] it means that the snake hit the scren from left or right, finally
 # snake[0] in [1:] it means that the snake hit itself
-if snake[0][0] in [0,sh] or snake[0][0] in [0,sw] or snake[0] in snake [1:]:
+if snake[0][0] in [0, sh] or snake[0][1] in [0, sw] or snake[0] in snake[1:]:
     curses.endwin()
     quit()
 
@@ -63,31 +62,33 @@ new_head = [snake[0][0], snake[0][1]]
 # putting 4 if conditions that represent the 4 directions of moving for the snake 
 # the, i use the ".insert()" to insert the new direction of the head 
 if key == curses.KEY_DOWN:
-    new_head[0] += 1
+      new_head[0] += 1
 if key == curses.KEY_UP:
-    new_head[0] -= 1
+      new_head[0] -= 1
 if key == curses.KEY_RIGHT:
-    new_head[1] += 1
+      new_head[1] += 1
 if key == curses.KEY_LEFT:
-    new_head[1] -= 1
-
+      new_head[1] -= 1
+  
+snake.insert(0, new_head)
 # putting the steps for the snake eating the food, but i need first to create the food, then
 # use the "random" library to make the position of the food not expected at all
-if snake[0] == food :
+if snake[0] == food:
     food = None
-    while food is none:
+    while food is None:
         # we gonna use ".rundint()" and make the position of the food from the first point on the screen
         # (height or width) until before the border of the screen by only 1 point .
+     
         nf = [
-            random. rundint(1, sh-1), 
+            random. randint(1, sh-1), 
             random. randint(1, sw-1)
         ]
 
 # put a condition that makes the food appear in any random position except the sanke's body itself
-    food = nf if nf not in snake else None
+        food = nf if nf not in snake else None
 
 # now, i will give a specific look and a way for the food to appear for snake on the screen by using "curses.ASC_PI"
-    w.addch(food[0], food[1], curses.ACS_API) 
+    w.addch(food[0], food[1], curses.ACS_PI) 
 
 # i am putting a very important step as, if the snake didn't eat the food, the tail shouldn't grow 
 # and that gonna be by using ".pop()" as it deletes the last value in the list 
@@ -97,29 +98,7 @@ else:
     w.addch(tail[0], tail[1], ' ') # here i am putting the coordinates of the snake tail and replace it with no value
 
 # Here, the fnal code line that will show the final form of the snake when i'm starting my program
-    w.addch(sbake[0][0], snake[0][1], curses.ASC_CKBOARD)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    w.addch(snake[0][0], snake[0][1], curses.ACS_CKBOARD)
 
 
 
